@@ -68,24 +68,3 @@ REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```bash
 npm start
 ```
-
-## Project Structure
-
-src/
-├── components/ # React components
-│ ├── Header.tsx
-│ ├── NewsFeed.tsx
-│ ├── PostForm.tsx
-│ ├── MentionDropdown.tsx
-│ └── YourInputComponent.tsx
-├── context/ # React context providers
-│ └── AuthContext.tsx
-├── lib/ # Utility functions and service configurations
-│ └── firebase.ts
-├── pages/ # Page components
-│ ├── Auth.tsx
-│ └── Home.tsx
-├── graphql/ # GraphQL queries and mutations
-│ ├── queries.ts
-│ └── mutations.ts
-└── App.tsx # Root component

@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA-y7kI1hC7WAfYAsZ5m2RYFFOhcfGuGkk",
@@ -43,7 +44,15 @@ export const loginWithEmail = async (email: string, password: string) => {
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
-// Log out
-// export const logOut = async () => {
-//   await signOut(auth);
-// };
+export const fetchUsers = async () => {
+  const db = getFirestore();
+  const usersCollection = collection(db, "users");
+  const userDocs = await getDocs(usersCollection);
+  
+  const users = userDocs.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+  
+  return users;
+};

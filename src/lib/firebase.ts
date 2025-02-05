@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, query, where, getDocs, limit, getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyA-y7kI1hC7WAfYAsZ5m2RYFFOhcfGuGkk",
@@ -44,15 +44,36 @@ export const loginWithEmail = async (email: string, password: string) => {
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
-export const fetchUsers = async () => {
-  const db = getFirestore();
-  const usersCollection = collection(db, "users");
-  const userDocs = await getDocs(usersCollection);
-  
-  const users = userDocs.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
-  
-  return users;
+// Add these new types
+type FirebaseUser = {
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  photoURL: string | null;
+};
+
+// Add this new function to fetch users
+export const fetchUsers = async (searchTerm: string = ''): Promise<FirebaseUser[]> => {
+  try {
+    const db = getFirestore(app);
+    const usersRef = collection(db, 'users');
+    const q = query(
+      usersRef,
+      where('displayName', '>=', searchTerm),
+      where('displayName', '<=', searchTerm + '\uf8ff'),
+      limit(10)
+    );
+    
+    const querySnapshot = await getDocs(q);
+    const users: FirebaseUser[] = [];
+    
+    querySnapshot.forEach((doc) => {
+      users.push(doc.data() as FirebaseUser);
+    });
+    
+    return users;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return [];
+  }
 };

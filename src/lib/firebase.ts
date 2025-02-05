@@ -184,3 +184,59 @@ export const getCurrentUserData = async (userId: string) => {
     return null;
   }
 };
+
+// Add these new functions
+export const followUser = async (userToFollowId: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('followers')
+      .insert([
+        {
+          follower_id: auth.currentUser?.uid,
+          following_id: userToFollowId,
+        }
+      ]);
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error following user:', error);
+    throw error;
+  }
+};
+
+export const unfollowUser = async (userToUnfollowId: string) => {
+  try {
+    const { error } = await supabase
+      .from('followers')
+      .delete()
+      .match({ 
+        follower_id: auth.currentUser?.uid,
+        following_id: userToUnfollowId 
+      });
+
+    if (error) throw error;
+  } catch (error) {
+    console.error('Error unfollowing user:', error);
+    throw error;
+  }
+};
+
+export const isFollowing = async (userId: string): Promise<boolean> => {
+  try {
+    const { data, error } = await supabase
+      .from('followers')
+      .select('*')
+      .match({ 
+        follower_id: auth.currentUser?.uid,
+        following_id: userId 
+      })
+      .single();
+
+    if (error) return false;
+    return !!data;
+  } catch (error) {
+    console.error('Error checking follow status:', error);
+    return false;
+  }
+};

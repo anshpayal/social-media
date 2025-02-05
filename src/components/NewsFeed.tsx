@@ -2,6 +2,56 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_POSTS } from "../graphql/queries";
 import PostForm from "./PostForm";
+import { followUser, unfollowUser, isFollowing } from '../lib/firebase';
+import { useAuth } from '../context/AuthContext';
+
+const FollowButton: React.FC<{ userId: string, username: string }> = ({ userId, username }) => {
+  const [following, setFollowing] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const { user } = useAuth();
+
+  React.useEffect(() => {
+    const checkFollowStatus = async () => {
+      const status = await isFollowing(userId);
+      setFollowing(status);
+    };
+    checkFollowStatus();
+  }, [userId]);
+
+  const handleFollowToggle = async () => {
+    if (user?.uid === userId) return; // Can't follow yourself
+    
+    setLoading(true);
+    try {
+      if (following) {
+        await unfollowUser(userId);
+        setFollowing(false);
+      } else {
+        await followUser(userId);
+        setFollowing(true);
+      }
+    } catch (error) {
+      console.error('Error toggling follow:', error);
+    }
+    setLoading(false);
+  };
+
+  if (user?.uid === userId) return null; // Don't show button for own posts
+
+  return (
+    <button
+      onClick={handleFollowToggle}
+      disabled={loading}
+      className={`ml-2 px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+        following
+          ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          : 'bg-indigo-500 text-white hover:bg-indigo-600'
+      } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+    >
+      {following ? 'Unfollow' : 'Follow'}
+    </button>
+  );
+};
 
 const NewsFeed: React.FC = () => {
   const { data, loading, error } = useQuery(GET_POSTS);
@@ -36,17 +86,24 @@ const NewsFeed: React.FC = () => {
                   src={post.node.avatar_url || "https://via.placeholder.com/40"}
                   alt={post.node.username}
                   className="w-10 h-10 rounded-full border-2 border-gray-100"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "https://via.placeholder.com/40";
+                  }}
                 />
-                <div className="ml-3">
-                  <p className="font-semibold text-gray-900">@{post.node.username}</p>
-                  <p className="text-sm text-gray-500">
-                    {new Date(post.node.created_at).toLocaleDateString(undefined, {
-                      month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </p>
+                <div className="ml-3 flex items-center">
+                  <div>
+                    <p className="font-semibold text-gray-900">@{post.node.username}</p>
+                    <p className="text-sm text-gray-500">
+                      {new Date(post.node.created_at).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </p>
+                  </div>
+                  <FollowButton userId={post.node.user_id} username={post.node.username} />
                 </div>
               </div>
               

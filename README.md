@@ -1,50 +1,91 @@
-# React + TypeScript + Vite
+# SocialApp - Modern Social Media Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern social media application built with React, TypeScript, Firebase, Supabase, and GraphQL. This application allows users to create accounts, share posts, mention other users, and interact with content in real-time.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Authentication
+- Custom email/password registration and login
+- Username selection during registration
+- Secure authentication using Firebase
+- User data synchronization with Supabase
 
-## Expanding the ESLint configuration
+### Posts and Content
+- Create text posts with image attachments
+- Real-time feed updates
+- Rich text formatting
+- User mentions using @ symbol
+- Image upload and preview
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### User Interface
+- Modern, responsive design
+- Clean and intuitive user experience
+- Real-time username suggestions when mentioning
+- Loading states and error handling
+- Profile picture support with fallback avatars
 
-- Configure the top-level `parserOptions` property like this:
+## Technology Stack
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Frontend
+- React 18
+- TypeScript
+- Tailwind CSS for styling
+- Apollo Client for GraphQL
+
+### Backend & Services
+- Firebase Authentication
+- Supabase for user data
+- GraphQL for API queries
+- PostgreSQL database (via Supabase)
+
+## Local Setup
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/socialapp.git
+cd socialapp
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+2. **Install dependencies**
+```bash
+npm install
 ```
+
+3. **Environment Setup**
+Create a `.env` file in the root directory with the following variables:
+```env
+REACT_APP_FIREBASE_API_KEY=your_firebase_api_key
+REACT_APP_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+REACT_APP_FIREBASE_PROJECT_ID=your_firebase_project_id
+REACT_APP_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
+REACT_APP_FIREBASE_APP_ID=your_firebase_app_id
+REACT_APP_SUPABASE_URL=your_supabase_url
+REACT_APP_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+4. **Start the development server**
+```bash
+npm start
+```
+
+## Project Structure
+
+src/
+├── components/ # React components
+│ ├── Header.tsx
+│ ├── NewsFeed.tsx
+│ ├── PostForm.tsx
+│ ├── MentionDropdown.tsx
+│ └── YourInputComponent.tsx
+├── context/ # React context providers
+│ └── AuthContext.tsx
+├── lib/ # Utility functions and service configurations
+│ └── firebase.ts
+├── pages/ # Page components
+│ ├── Auth.tsx
+│ └── Home.tsx
+├── graphql/ # GraphQL queries and mutations
+│ ├── queries.ts
+│ └── mutations.ts
+└── App.tsx # Root component

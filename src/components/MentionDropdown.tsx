@@ -49,12 +49,12 @@ const MentionDropdown: React.FC<MentionDropdownProps> = ({
                 {user.photoURL && (
                   <img
                     src={user.photoURL}
-                    alt={user.displayName}
+                    alt={user.username}
                     className="w-6 h-6 rounded-full mr-2"
                   />
                 )}
-                <span>{user.displayName}</span>
-                <span className="text-gray-400 text-sm ml-2">{user.email}</span>
+                <span>@{user.username}</span>
+                <span className="text-gray-400 text-sm ml-2">{user.displayName}</span>
               </div>
             </li>
           ))}

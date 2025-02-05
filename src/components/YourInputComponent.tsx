@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import MentionDropdown from './MentionDropdown';
-import { fetchUsers } from '../lib/firebase';
+// import { fetchUsers } from '../lib/firebase';
 
 interface YourInputComponentProps {
   content: string;

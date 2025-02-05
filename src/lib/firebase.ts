@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, User, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { collection, query, where, getDocs, limit, getFirestore } from 'firebase/firestore';
+// import { collection, query, where, getDocs, limit, getFirestore } from 'firebase/firestore';
 import { createClient } from '@supabase/supabase-js';
 
 const firebaseConfig = {

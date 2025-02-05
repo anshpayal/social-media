@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { loginWithEmail, registerWithEmail, auth, signInWithGoogle, checkUsernameAvailability } from "../lib/firebase";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { loginWithEmail, registerWithEmail, checkUsernameAvailability } from "../lib/firebase";
+// import { GoogleAuthProvider } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const provider = new GoogleAuthProvider();
+// const provider = new GoogleAuthProvider();
 
 const Auth: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +12,7 @@ const Auth: React.FC = () => {
   const [username, setUsername] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState("");
-  const { user, login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleUsernameChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,17 +56,17 @@ const Auth: React.FC = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const user = await signInWithGoogle();
-      if (user) {
-        login(user);
-        navigate("/home");
-      }
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     const user = await signInWithGoogle();
+  //     if (user) {
+  //       login(user);
+  //       navigate("/home");
+  //     }
+  //   } catch (err: any) {
+  //     setError(err.message);
+  //   }
+  // };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">

@@ -12,13 +12,14 @@ import Home from "./pages/Home";
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { user } = useAuth();
+  const { user } = useAuth(); // useAuth is a custom hook that gives access to authentication data/function anywhere in the app
   return user ? <>{children}</> : <Navigate to="/" />;
 };
 
 const App: React.FC = () => {
   return (
-    <AuthProvider>
+    // AuthProvide wraps entire application to provide authentication context
+    <AuthProvider> 
       <Router>
         <Routes>
           <Route path="/" element={<Auth />} />

@@ -2,6 +2,8 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { User, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../lib/firebase";
 
+// State Management to manager user state and loading state.
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;

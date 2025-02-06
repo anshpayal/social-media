@@ -7,6 +7,7 @@ import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
+    {/* ApolloProvider wrapping our react application, means any component inside the Apolloprovide can use GraphQL queries and mutations */}
     <ApolloProvider client={client}>
       <App />
     </ApolloProvider>

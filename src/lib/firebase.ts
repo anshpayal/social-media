@@ -165,7 +165,7 @@ export const fetchUsers = async (searchTerm: string = ''): Promise<FirebaseUser[
   }
 };
 
-// Add this new function to get user data including username
+// function to get user data including username
 export const getCurrentUserData = async (userId: string) => {
   try {
     const { data, error } = await supabase
@@ -186,7 +186,7 @@ export const getCurrentUserData = async (userId: string) => {
   }
 };
 
-// Add these new functions
+
 export const followUser = async (userToFollowId: string) => {
   try {
     const { data, error } = await supabase
